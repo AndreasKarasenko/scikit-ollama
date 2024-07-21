@@ -1,0 +1,11 @@
+pre-commit
+black
+isort
+ruff
+docformatter
+interrogate
+numpy
+pandas
+tqdm
+scikit-learn
+scikit-llm==1.3.0
