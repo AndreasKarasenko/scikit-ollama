@@ -23,7 +23,7 @@ classifiers = [
 ]
 
 [tool.ruff]
-select = [
+lint.select = [
     # pycodestyle
     "E",
     # pyflakes
@@ -38,7 +38,7 @@ select = [
     "N",
 ]
 # Error E501 (Line too long) is ignored because of docstrings.
-ignore = [
+lint.ignore = [
     "S101",
     "S301",
     "S311",
@@ -56,10 +56,10 @@ extend-exclude = ["tests/*.py", "setup.py"]
 target-version = "py39"
 force-exclude = true
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402", "F401", "F403", "F811"]
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "numpy"
 
 [tool.mypy]

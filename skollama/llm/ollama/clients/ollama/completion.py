@@ -1,5 +1,6 @@
-from skllm.utils import retry
 from ollama import Client
+
+from skllm.utils import retry
 
 
 @retry(max_retries=3)

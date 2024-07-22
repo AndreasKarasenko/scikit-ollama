@@ -1,16 +1,19 @@
-from typing import List, Union, Dict, Optional, Any, Mapping
-from skollama.llm.ollama.completion import get_chat_completion
-from skllm.utils import extract_json_key
+from collections.abc import Mapping
 from concurrent.futures import ThreadPoolExecutor
-from skollama.llm.ollama.embedding import get_embedding
+from itertools import repeat
+from typing import Any, Optional, Union
+
+import numpy as np
+from tqdm import tqdm
+
 from skllm.llm.base import (
     BaseClassifierMixin,
     BaseEmbeddingMixin,
     BaseTextCompletionMixin,
 )
-import numpy as np
-from tqdm import tqdm
-from itertools import repeat
+from skllm.utils import extract_json_key
+from skollama.llm.ollama.completion import get_chat_completion
+from skollama.llm.ollama.embedding import get_embedding
 
 
 def construct_message(role: str, content: str) -> dict:
@@ -33,10 +36,24 @@ def construct_message(role: str, content: str) -> dict:
 
 
 class OllamaCompletionMixin(BaseTextCompletionMixin):
+    """Mixin for handling chat completions with the Ollama server.
+
+    This mixin provides methods to interact with the Ollama server for obtaining chat completions.
+    It defines the following functionality:
+
+    Methods
+    -------
+    _get_chat_completion(model, messages, system_message=None, **kwargs)
+        Gets a chat completion from the Ollama server based on the provided messages and model.
+
+    _convert_completion_to_str(completion)
+        Converts the completion object returned by the Ollama server into a string.
+    """
+
     def _get_chat_completion(
         self,
         model: str,
-        messages: Union[str, List[Dict[str, str]]],
+        messages: Union[str, list[dict[str, str]]],
         system_message: Optional[str] = None,
         **kwargs: Any,
     ):
@@ -80,6 +97,17 @@ class OllamaCompletionMixin(BaseTextCompletionMixin):
 
 
 class OllamaClassifierMixin(OllamaCompletionMixin, BaseClassifierMixin):
+    """Mixin for Ollama-based classification tasks.
+
+    This mixin extends the OllamaCompletionMixin to provide functionality
+    specific to classification tasks, leveraging the Ollama model's ability
+    to classify text based on provided inputs and completions.
+
+    Methods
+    -------
+    _extract_out_label(completion, **kwargs)
+        Extracts the classification label from the Ollama model's completion.
+    """
 
     def _extract_out_label(self, completion: Mapping[str, Any], **kwargs) -> Any:
         """Extracts the label from a completion.
@@ -106,7 +134,19 @@ class OllamaClassifierMixin(OllamaCompletionMixin, BaseClassifierMixin):
 
 
 class OllamaEmbeddingMixin(BaseEmbeddingMixin):
-    def _get_embeddings(self, text: np.ndarray) -> List[List[float]]:
+    """Mixin for Ollama-based embedding tasks.
+
+    This mixin extends the BaseEmbeddingMixin to provide a multi-threaded approach
+    for getting embeddings.
+    It defines the following methods:
+
+    Methods
+    -------
+    _get_embeddings(self, text: np.ndarray)
+        Queries the locally running embedding server with the provided texts.
+    """
+
+    def _get_embeddings(self, text: np.ndarray) -> list[list[float]]:
         """Gets embeddings from the OpenAI compatible API.
 
         Parameters
