@@ -3,8 +3,9 @@ from skllm.models._base.classifier import (
     MultiLabelMixin as _MultiLabelMixin,
     BaseZeroShotClassifier as _BaseZeroShotClassifier,
 )
-from skllm.llm.ollama.mixin import OllamaClassifierMixin as _OllamaClassifierMixin
+from skollama.llm.ollama.mixin import OllamaClassifierMixin as _OllamaClassifierMixin
 from typing import Optional
+
 
 class ZeroShotOllamaClassifier(
     _BaseZeroShotClassifier, _OllamaClassifierMixin, _SingleLabelMixin

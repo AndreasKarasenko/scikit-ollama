@@ -1,8 +1,9 @@
 from ollama import Client
 
+
 def set_credentials(host: str = "http://localhost:11434"):
     """Set the OpenAI key and organization.
-    
+
     Parameters
     ----------
     url : str

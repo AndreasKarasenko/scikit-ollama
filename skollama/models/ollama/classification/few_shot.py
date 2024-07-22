@@ -1,11 +1,11 @@
-from skllm.llm.ollama.mixin import OllamaClassifierMixin
+from skollama.llm.ollama.mixin import OllamaClassifierMixin
 from skllm.models._base.classifier import (
     BaseFewShotClassifier,
     BaseDynamicFewShotClassifier,
     SingleLabelMixin,
     MultiLabelMixin,
 )
-from skllm.models.ollama.vectorization import OllamaVectorizer
+from skollama.models.ollama.vectorization import OllamaVectorizer
 from skllm.models._base.vectorizer import BaseVectorizer
 from skllm.memory.base import IndexConstructor
 from typing import Optional

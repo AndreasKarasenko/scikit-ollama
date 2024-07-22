@@ -1,4 +1,4 @@
-from skllm.llm.ollama.clients.ollama.credentials import set_credentials
+from skollama.llm.ollama.clients.ollama.credentials import set_credentials
 from skllm.utils import retry
 
 
@@ -32,10 +32,12 @@ def get_embedding(
         The GPT embedding for the string.
     """
     if api in ("custom_url"):
-        client = set_credentials() # should allow for host / url!
+        client = set_credentials()  # should allow for host / url!
     # text = [str(t).replace("\n", " ") for t in text]
     embeddings = []
-    emb = client.embeddings(model=model, prompt=text[0]) # change to dont assume multiple texts
+    emb = client.embeddings(
+        model=model, prompt=text[0]
+    )  # change to dont assume multiple texts
     e = emb["embedding"]
     if not isinstance(e, list):
         raise ValueError(

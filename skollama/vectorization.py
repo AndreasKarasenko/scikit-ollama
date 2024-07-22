@@ -1,1 +1,1 @@
-from skllm.models.gpt.vectorization import GPTVectorizer
+from skollama.models.ollama.vectorization import OllamaVectorizer

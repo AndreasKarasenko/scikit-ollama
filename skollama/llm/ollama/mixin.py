@@ -1,8 +1,8 @@
 from typing import List, Union, Dict, Optional, Any, Mapping
-from skllm.llm.ollama.completion import get_chat_completion
+from skollama.llm.ollama.completion import get_chat_completion
 from skllm.utils import extract_json_key
 from concurrent.futures import ThreadPoolExecutor
-from skllm.llm.ollama.embedding import get_embedding
+from skollama.llm.ollama.embedding import get_embedding
 from skllm.llm.base import (
     BaseClassifierMixin,
     BaseEmbeddingMixin,
@@ -30,6 +30,7 @@ def construct_message(role: str, content: str) -> dict:
     if role not in ("system", "user", "assistant"):
         raise ValueError("Invalid role")
     return {"role": role, "content": content}
+
 
 class OllamaCompletionMixin(BaseTextCompletionMixin):
     def _get_chat_completion(
@@ -71,14 +72,15 @@ class OllamaCompletionMixin(BaseTextCompletionMixin):
             self.options,
         )
         return completion
-    
+
     def _convert_completion_to_str(self, completion: Mapping[str, Any]):
         if hasattr(completion, "__getitem__"):
             return str(completion["message"]["content"])
         return str(completion.message.content)
 
+
 class OllamaClassifierMixin(OllamaCompletionMixin, BaseClassifierMixin):
-    
+
     def _extract_out_label(self, completion: Mapping[str, Any], **kwargs) -> Any:
         """Extracts the label from a completion.
 
@@ -93,9 +95,7 @@ class OllamaClassifierMixin(OllamaCompletionMixin, BaseClassifierMixin):
         """
         try:
             if hasattr(completion, "__getitem__"):
-                label = extract_json_key(
-                    completion["message"]["content"], "label"
-                )
+                label = extract_json_key(completion["message"]["content"], "label")
             else:
                 label = extract_json_key(completion.message.content, "label")
         except Exception as e:
@@ -103,6 +103,7 @@ class OllamaClassifierMixin(OllamaCompletionMixin, BaseClassifierMixin):
             print(f"Could not extract the label from the completion: {str(e)}")
             label = ""
         return label
+
 
 class OllamaEmbeddingMixin(BaseEmbeddingMixin):
     def _get_embeddings(self, text: np.ndarray) -> List[List[float]]:
@@ -122,20 +123,29 @@ class OllamaEmbeddingMixin(BaseEmbeddingMixin):
         embedding : List[List[float]]
         """
         embeddings = []
-        print("Batch size:", self.batch_size) # does not work yet, needs refactor of probably WAY more things
+        print(
+            "Batch size:", self.batch_size
+        )  # does not work yet, needs refactor of probably WAY more things
         with ThreadPoolExecutor(max_workers=self.num_workers) as executor:
             embs = list(
-                tqdm(executor.map(lambda x, y: get_embedding(x,y), text, repeat(self.model, len(text))), total=len(text))
+                tqdm(
+                    executor.map(
+                        lambda x, y: get_embedding(x, y),
+                        text,
+                        repeat(self.model, len(text)),
+                    ),
+                    total=len(text),
+                )
             )
         for i in embs:
             embeddings.extend(i)
         # for i in tqdm(range(0, len(text), self.batch_size)):
-            # batch = text[i : i + self.batch_size].tolist()
-            # embeddings.extend( # technically a single instance, can be multiprocessed to allow for batches
-            #     get_embedding(
-            #         batch,
-            #         self.model,
-            #     )
-            # )
+        # batch = text[i : i + self.batch_size].tolist()
+        # embeddings.extend( # technically a single instance, can be multiprocessed to allow for batches
+        #     get_embedding(
+        #         batch,
+        #         self.model,
+        #     )
+        # )
 
         return embeddings
