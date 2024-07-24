@@ -32,7 +32,7 @@ clf.fit(X, y)
 preds = clf.predict(X)
 ```
 
-For more information please refer to the [documentation](<>).
+For more information please refer to the [documentation](https://andreaskarasenko.github.io/skollama-docs/).
 
 ## Why Scikit-Ollama?
 
@@ -44,6 +44,10 @@ e.g. OpenAI, Vertex, GPT4All. In their version you could already use the OpenAI 
 
 Therefore this model uses the Ollama Python SDK to allow that level of control.
 
+## Contributing
+
+For a guide to contributing please follow the steps [here](./CONTRIBUTING.md).
+
 ## Citation
 
 ```
@@ -54,3 +58,5 @@ Therefore this model uses the Ollama Python SDK to allow that level of control.
     url = {https://github.com/AndreasKarasenko/scikit-ollama}
 }
 ```
+
+If you consider citing this repository, please also consider citing `scikit-llm`.
