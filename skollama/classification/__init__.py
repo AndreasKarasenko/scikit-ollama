@@ -4,13 +4,13 @@
 from skollama.models.ollama.classification.zero_shot import (
     ZeroShotOllamaClassifier,
     MultiLabelZeroShotOllamaClassifier,
-    # TODO add CoTOllamaClassifier
+    CoTOllamaClassifier,
 )
 
 from skollama.models.ollama.classification.few_shot import (
     FewShotOllamaClassifier,
     DynamicFewShotOllamaClassifier,
-    # TODO add MultiLabelFewShotOllamaClassifier
+    MultiLabelFewShotOllamaClassifier,
 )
 
 # TODO add OllamaTunableClassifier
@@ -20,4 +20,6 @@ __all__ = [
     "MultiLabelZeroShotOllamaClassifier",
     "FewShotOllamaClassifier",
     "DynamicFewShotOllamaClassifier",
+    "MultiLabelFewShotOllamaClassifier",
+    "CoTOllamaClassifier",
 ]

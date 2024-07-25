@@ -1,9 +1,10 @@
 from typing import Optional
 
 from skllm.memory.base import IndexConstructor
-from skllm.models._base.classifier import (  # MultiLabelMixin, # TODO add missing MultiLabelMixin model
+from skllm.models._base.classifier import (
     BaseDynamicFewShotClassifier,
     BaseFewShotClassifier,
+    MultiLabelMixin,
     SingleLabelMixin,
 )
 from skllm.models._base.vectorizer import BaseVectorizer
@@ -38,6 +39,42 @@ class FewShotOllamaClassifier(
         super().__init__(
             model=model,
             default_label=default_label,
+            prompt_template=prompt_template,
+            **kwargs,
+        )
+        self.host = host
+        self.options = options
+
+
+class MultiLabelFewShotOllamaClassifier(
+    BaseFewShotClassifier, OllamaClassifierMixin, MultiLabelMixin
+):
+    """Multi-label few-shot text classifier using Ollama API-compatible models.
+
+    Parameters
+    ----------
+    model : str, optional
+        model to use, by default "llama3"
+    default_label : str, optional
+        default label for failed prediction; if "Random" -> selects randomly based on class frequencies, by default "Random"
+    prompt_template : Optional[str], optional
+        custom prompt template to use, by default None
+    """
+
+    def __init__(
+        self,
+        model: str = "llama3",
+        host: str = "http://localhost:11434",
+        options: dict = None,
+        default_label: str = "Random",
+        max_labels: Optional[int] = 5,
+        prompt_template: Optional[str] = None,
+        **kwargs,
+    ):
+        super().__init__(
+            model=model,
+            default_label=default_label,
+            max_labels=max_labels,
             prompt_template=prompt_template,
             **kwargs,
         )
