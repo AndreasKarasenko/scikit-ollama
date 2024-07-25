@@ -67,12 +67,14 @@ class MultiLabelFewShotOllamaClassifier(
         host: str = "http://localhost:11434",
         options: dict = None,
         default_label: str = "Random",
+        max_labels: Optional[int] = 5,
         prompt_template: Optional[str] = None,
         **kwargs,
     ):
         super().__init__(
             model=model,
             default_label=default_label,
+            max_labels=max_labels,
             prompt_template=prompt_template,
             **kwargs,
         )
