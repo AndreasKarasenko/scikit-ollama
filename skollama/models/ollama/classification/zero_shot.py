@@ -8,6 +8,8 @@ from skllm.models._base.classifier import MultiLabelMixin as _MultiLabelMixin
 from skllm.models._base.classifier import SingleLabelMixin as _SingleLabelMixin
 from skollama.llm.ollama.mixin import OllamaClassifierMixin as _OllamaClassifierMixin
 
+# from skollama.utils.manager import OllamaServiceManager
+
 
 class ZeroShotOllamaClassifier(
     _BaseZeroShotClassifier, _OllamaClassifierMixin, _SingleLabelMixin
@@ -41,6 +43,22 @@ class ZeroShotOllamaClassifier(
         )
         self.host = host
         self.options = options
+
+    # def fit(self, X, y):  # TODO finish
+    #     """Testing fit function."""
+    #     super().fit(X, y)
+
+    #     manager = OllamaServiceManager()
+    #     if not manager.service_status():
+    #         manager.start_service()
+
+    #     models = manager.get_models()
+    #     if self.model not in models:
+    #         warnings.warn(
+    #             f"The specified model '{self.model}' was not found in the model"
+    #             f" list:\n{models}.\nAttempting to load it..."
+    #         )
+    #         # message = manager.pull_model(self.model)
 
 
 class CoTOllamaClassifier(
