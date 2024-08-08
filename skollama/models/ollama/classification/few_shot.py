@@ -21,6 +21,10 @@ class FewShotOllamaClassifier(
     ----------
     model : str, optional
         model to use, by default "llama3"
+    host: str, optional
+        Ollama host to connect to, by default "http://localhost:11434"
+    options: dict, optional
+        additional options to pass to the Ollama API, by default None
     default_label : str, optional
         default label for failed prediction; if "Random" -> selects randomly based on class frequencies, by default "Random"
     prompt_template : Optional[str], optional
@@ -55,6 +59,10 @@ class MultiLabelFewShotOllamaClassifier(
     ----------
     model : str, optional
         model to use, by default "llama3"
+    host: str, optional
+        Ollama host to connect to, by default "http://localhost:11434"
+    options: dict, optional
+        additional options to pass to the Ollama API, by default None
     default_label : str, optional
         default label for failed prediction; if "Random" -> selects randomly based on class frequencies, by default "Random"
     prompt_template : Optional[str], optional
@@ -92,6 +100,10 @@ class DynamicFewShotOllamaClassifier(
     ----------
     model : str, optional
         model to use, by default "llama3"
+    host: str, optional
+        Ollama host to connect to, by default "http://localhost:11434"
+    options: dict, optional
+        additional options to pass to the Ollama API, by default None
     default_label : str, optional
         default label for failed prediction; if "Random" -> selects randomly based on class frequencies, by default "Random"
     prompt_template : Optional[str], optional

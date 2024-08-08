@@ -19,7 +19,7 @@ def get_embedding(
     max_retries : int, optional
         The maximum number of retries to use. Defaults to 3.
     api: str, optional
-        The API to use. Must be one of "openai" or "azure". Defaults to "openai".
+        Must be custom_url currently. Defaults to "custom_url".
 
     Returns
     -------

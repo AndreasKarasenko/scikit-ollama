@@ -14,7 +14,11 @@ class OllamaExplainableNER(ExplainableNER, OllamaCompletionMixin):
     sparse_output : bool, optional
         whether to generate a sparse representation of the predictions, by default True
     model : str, optional
-        model to use, by default "gpt-3.5-turbo"
+        model to use, by default "llama3"
+    host: str, optional
+        Ollama host to connect to, by default "http://localhost:11434"
+    options: dict, optional
+        additional options to pass to the Ollama API, by default None
     """
 
     def __init__(

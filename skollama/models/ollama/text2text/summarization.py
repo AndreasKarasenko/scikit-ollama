@@ -13,13 +13,15 @@ class OllamaSummarizer(
     Attributes
     ----------
     model : str, optional
-        model to use, by default "gpt-3.5-turbo"
+        model to use, by default "llama3"
+    host: str, optional
+        Ollama host to connect to, by default "http://localhost:11434"
+    options: dict, optional
+        additional options to pass to the Ollama API, by default None
     default_label : str, optional
         default label for failed prediction; if "Random" -> selects randomly based on class frequencies, by default "Random"
-    max_labels : Optional[int], optional
-        maximum labels per sample, by default 5
-    prompt_template : Optional[str], optional
-        custom prompt template to use, by default None
+    max_words : Optional[int], optional
+        maximum number of words to use, by default 15
     """
 
     def __init__(
