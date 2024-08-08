@@ -9,8 +9,18 @@ def get_chat_completion(
     host: str = "http://localhost:11434/",
     options: dict = None,
 ):
-    """Gets a chat completion from an ollama server running locally or
-    remote.
+    """Gets a chat completion from an ollama server running locally or remote.
+
+    Parameters
+    ----------
+    messages : dict
+        dictionary with the chat history
+    model : str, optional
+        model to use, by default "llama3"
+    host : str, optional
+        Ollama host to connect to, by default "http://localhost:11434/"
+    options: dict, optional
+        additional options to pass to the Ollama API, by default None
     """
     return _ollama_get_chat_completion(
         messages=messages, model=model, host=host, options=options

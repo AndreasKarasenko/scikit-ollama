@@ -14,17 +14,13 @@ def get_embedding(
     ----------
     text : str
         The string to encode.
-    key : str
-        The OPEN AI key to use.
-    org : str
-        The OPEN AI organization ID to use.
-    model : str, optional
-        The model to use. Defaults to "text-embedding-ada-002".
+    model : str
+        model to use, by default "llama3"
 
     Returns
     -------
     emb : list
-        The GPT embedding for the string.
+        The embedding for the string.
     """
     api, model = split_to_api_and_model(model)
     if api == "gpt4all":
