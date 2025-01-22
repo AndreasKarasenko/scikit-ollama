@@ -9,3 +9,5 @@ numpy
 pandas
 tqdm
 ollama
+pydantic
+openai>=1.59.9

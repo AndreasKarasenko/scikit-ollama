@@ -87,6 +87,7 @@ class OllamaCompletionMixin(BaseTextCompletionMixin):
             model,
             self.host,
             self.options,
+            self.format,
         )
         return completion
 
@@ -121,9 +122,13 @@ class OllamaClassifierMixin(OllamaCompletionMixin, BaseClassifierMixin):
         -------
         label : str
         """
+        if self._base_model:
+            key = list(self._base_model.__fields__.keys())[0]
+        else:
+            key = "label"
         try:
             if hasattr(completion, "__getitem__"):
-                label = extract_json_key(completion["message"]["content"], "label")
+                label = extract_json_key(completion["message"]["content"], key)
             else:
                 label = extract_json_key(completion.message.content, "label")
         except Exception as e:
