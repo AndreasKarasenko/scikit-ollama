@@ -1,5 +1,7 @@
 from typing import Optional
 
+from pydantic import BaseModel
+
 from skllm.memory.base import IndexConstructor
 from skllm.models._base.classifier import (
     BaseDynamicFewShotClassifier,
@@ -38,6 +40,7 @@ class FewShotOllamaClassifier(
         options: dict = None,
         default_label: str = "Random",
         prompt_template: Optional[str] = None,
+        structured_output: Optional[BaseModel] = "",
         **kwargs,
     ):
         super().__init__(
@@ -48,6 +51,12 @@ class FewShotOllamaClassifier(
         )
         self.host = host
         self.options = options
+        self._base_model = structured_output
+        if structured_output and issubclass(structured_output, BaseModel):
+            json_schema = structured_output.model_json_schema()
+        else:
+            json_schema = ""
+        self.format = json_schema
 
 
 class MultiLabelFewShotOllamaClassifier(
