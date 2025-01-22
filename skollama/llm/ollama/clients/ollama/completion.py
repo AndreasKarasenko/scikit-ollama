@@ -1,4 +1,5 @@
 from ollama import Client
+from pydantic import BaseModel
 
 from skllm.utils import retry
 
@@ -9,6 +10,7 @@ def get_chat_completion(
     model: str = "llama3",
     host: str = "http://localhost:11434",
     options: dict = None,
+    format: BaseModel = "",
 ):
     """Gets a chat completion from an ollama server.
 
@@ -28,6 +30,9 @@ def get_chat_completion(
     client = Client(host=host)
     # completion = client.generate(model=model, messages=messages) # TODO proliferate options
     completion = client.chat(
-        model=model, messages=messages, options=options
+        model=model,
+        messages=messages,
+        options=options,
+        format=format,
     )  # TODO proliferate options
     return completion
