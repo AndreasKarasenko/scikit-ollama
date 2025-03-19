@@ -28,6 +28,8 @@ class ZeroShotOllamaClassifier(
         default label for failed prediction; if "Random" -> selects randomly based on class frequencies, by default "Random"
     prompt_template : Optional[str], optional
         custom prompt template to use, by default None
+    structured_output : Optional[BaseModel], optional
+        structured output model to force output style, by default ""
     """
 
     def __init__(
@@ -48,7 +50,7 @@ class ZeroShotOllamaClassifier(
         )
         self.host = host
         self.options = options
-        self._base_model = structured_output
+        self.structured_output = structured_output
         if structured_output and issubclass(structured_output, BaseModel):
             json_schema = structured_output.model_json_schema()
         else:
@@ -75,6 +77,8 @@ class CoTOllamaClassifier(
         maximum labels per sample, by default 5
     prompt_template : Optional[str], optional
         custom prompt template to use, by default None
+    structured_output : Optional[BaseModel], optional
+        structured output model to force output style, by default ""
     """
 
     def __init__(
@@ -84,6 +88,7 @@ class CoTOllamaClassifier(
         options: dict = None,
         default_label: str = "Random",
         prompt_template: Optional[str] = None,
+        structured_output: Optional[BaseModel] = "",
         **kwargs,
     ):
         super().__init__(
@@ -94,6 +99,12 @@ class CoTOllamaClassifier(
         )
         self.host = host
         self.options = options
+        self.structured_output = structured_output
+        if structured_output and issubclass(structured_output, BaseModel):
+            json_schema = structured_output.model_json_schema()
+        else:
+            json_schema = ""
+        self.format = json_schema
 
 
 class MultiLabelZeroShotOllamaClassifier(
@@ -116,6 +127,8 @@ class MultiLabelZeroShotOllamaClassifier(
         maximum labels per sample, by default 5
     prompt_template : Optional[str], optional
         custom prompt template to use, by default None
+    structured_output : Optional[BaseModel], optional
+        structured output model to force output style, by default ""
     """
 
     def __init__(
@@ -126,6 +139,7 @@ class MultiLabelZeroShotOllamaClassifier(
         default_label: str = "Random",
         max_labels: Optional[int] = 5,
         prompt_template: Optional[str] = None,
+        structured_output: Optional[BaseModel] = "",
         **kwargs,
     ):
         super().__init__(
@@ -137,3 +151,10 @@ class MultiLabelZeroShotOllamaClassifier(
         )
         self.host = host
         self.options = options
+
+        self.structured_output = structured_output
+        if structured_output and issubclass(structured_output, BaseModel):
+            json_schema = structured_output.model_json_schema()
+        else:
+            json_schema = ""
+        self.format = json_schema

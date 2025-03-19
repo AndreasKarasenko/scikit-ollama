@@ -122,8 +122,8 @@ class OllamaClassifierMixin(OllamaCompletionMixin, BaseClassifierMixin):
         -------
         label : str
         """
-        if self._base_model:
-            key = list(self._base_model.__fields__.keys())[0]
+        if self.structured_output:
+            key = list(self.structured_output.__fields__.keys())[0]
         else:
             key = "label"
         try:

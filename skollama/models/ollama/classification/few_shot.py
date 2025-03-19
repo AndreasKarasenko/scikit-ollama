@@ -31,6 +31,8 @@ class FewShotOllamaClassifier(
         default label for failed prediction; if "Random" -> selects randomly based on class frequencies, by default "Random"
     prompt_template : Optional[str], optional
         custom prompt template to use, by default None
+    structured_output : Optional[BaseModel], optional
+        structured output model to force output style, by default ""
     """
 
     def __init__(
@@ -51,7 +53,7 @@ class FewShotOllamaClassifier(
         )
         self.host = host
         self.options = options
-        self._base_model = structured_output
+        self.structured_output = structured_output
         if structured_output and issubclass(structured_output, BaseModel):
             json_schema = structured_output.model_json_schema()
         else:
@@ -76,6 +78,8 @@ class MultiLabelFewShotOllamaClassifier(
         default label for failed prediction; if "Random" -> selects randomly based on class frequencies, by default "Random"
     prompt_template : Optional[str], optional
         custom prompt template to use, by default None
+    structured_output : Optional[BaseModel], optional
+        structured output model to force output style, by default ""
     """
 
     def __init__(
@@ -86,6 +90,7 @@ class MultiLabelFewShotOllamaClassifier(
         default_label: str = "Random",
         max_labels: Optional[int] = 5,
         prompt_template: Optional[str] = None,
+        structured_output: Optional[BaseModel] = "",
         **kwargs,
     ):
         super().__init__(
@@ -97,6 +102,12 @@ class MultiLabelFewShotOllamaClassifier(
         )
         self.host = host
         self.options = options
+        self.structured_output = structured_output
+        if structured_output and issubclass(structured_output, BaseModel):
+            json_schema = structured_output.model_json_schema()
+        else:
+            json_schema = ""
+        self.format = json_schema
 
 
 class DynamicFewShotOllamaClassifier(
@@ -125,6 +136,8 @@ class DynamicFewShotOllamaClassifier(
         scikit-llm vectorizer; if None, `OllamaVectorizer` is used, by default None
     metric : Optional[str], optional
         metric used for similarity search, by default "euclidean"
+    structured_output : Optional[BaseModel], optional
+        structured output model to force output style, by default ""
     """
 
     def __init__(
@@ -138,6 +151,7 @@ class DynamicFewShotOllamaClassifier(
         memory_index: Optional[IndexConstructor] = None,
         vectorizer: Optional[BaseVectorizer] = None,
         metric: Optional[str] = "euclidean",
+        structured_output: Optional[BaseModel] = "",
         **kwargs,
     ):
         if vectorizer is None:
@@ -153,3 +167,10 @@ class DynamicFewShotOllamaClassifier(
         )
         self.host = host
         self.options = options
+
+        self.structured_output = structured_output
+        if structured_output and issubclass(structured_output, BaseModel):
+            json_schema = structured_output.model_json_schema()
+        else:
+            json_schema = ""
+        self.format = json_schema

@@ -1,5 +1,7 @@
 from typing import Optional
 
+from pydantic import BaseModel
+
 from skllm.models._base.text2text import BaseSummarizer
 from skollama.llm.ollama.mixin import OllamaCompletionMixin
 
@@ -22,6 +24,8 @@ class OllamaSummarizer(
         default label for failed prediction; if "Random" -> selects randomly based on class frequencies, by default "Random"
     max_words : Optional[int], optional
         maximum number of words to use, by default 15
+    structured_output : Optional[BaseModel], optional
+        structured output model to force output style, by default ""
     """
 
     def __init__(
@@ -31,9 +35,17 @@ class OllamaSummarizer(
         options: dict = None,
         max_words: int = 15,
         focus: Optional[str] = None,
+        structured_output: Optional[BaseModel] = "",
     ):
         self.model = model
         self.max_words = max_words
         self.focus = focus
         self.host = host
         self.options = options
+
+        self.structured_output = structured_output
+        if structured_output and issubclass(structured_output, BaseModel):
+            json_schema = structured_output.model_json_schema()
+        else:
+            json_schema = ""
+        self.format = json_schema
